@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "cmc-proxy",
+  "builds": [
+    {
+      "src": "proxy.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "proxy.js"
+    }
+  ],
+  "env": {
+    "CMC_API_KEY": "@cmc_api_key"
+  }
+}
