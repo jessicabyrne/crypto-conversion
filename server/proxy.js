@@ -19,6 +19,8 @@ app.get("/*", (req, res) => {
       headers: {
         "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
         Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
       },
       httpsAgent: new https.Agent({
         rejectUnauthorized: false,

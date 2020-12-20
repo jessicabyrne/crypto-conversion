@@ -11,6 +11,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.21.0",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -24,9 +25,11 @@
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
+  "proxy": "http://localhost:5000/",
   "scripts": {
-    "start": "node server/proxy.js",
-    "dev": "nodemon server/proxy.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\"",
+    "start": "react-scripts start",
+    "server": "nodemon server/proxy.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
