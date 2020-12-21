@@ -10,3 +10,8 @@ Notes:
 3. Choosing between  https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest and https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest
 
 The first would be best for caching and then sorting based on user input. The second is best if we put off caching for now as it's a small sample app with few users and requests.
+
+4. Typing out more of the app
+
+5. Unit testing
+
