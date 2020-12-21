@@ -30,17 +30,14 @@ export default function CryptoConverter() {
     await fetchCryptoToUSD(userInput);
     await fetchExchangeRates();
 
-    Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
-      <li key={index}>
-        {key}: {currencyRateToUSD * conversionRateToUSD}
-      </li>
-    ));
+    console.log("cryptos", cryptos);
+    console.log("conversionRateToUSD", conversionRateToUSD);
   };
 
   return (
     <>
       <form onSubmit={() => handleSubmit(userInput)}>
-        <label htmlFor="cryptoType">Enter a cryptocurrency type</label>
+        <label htmlFor="cryptoType">Cryptocurrency Exchange Rates</label>
         <input
           value={userInput}
           id="cryptoType"
@@ -50,20 +47,17 @@ export default function CryptoConverter() {
         <input type="submit" value="Submit" />
       </form>
 
-      <h1>Cryptocurrency Exchange Rates</h1>
-      <h2>Fetch a list from an API and display it</h2>
-
-      {/* Fetch data from API */}
-      <div>
-        <button className="fetch-button" onClick={fetchExchangeRates}>
-          Fetch Data
-        </button>
-        <br />
-      </div>
-
       {/* Display data from API */}
       <div className="cryptos">
-        <ul></ul>
+        <ul>
+          {cryptos &&
+            conversionRateToUSD &&
+            Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
+              <li key={index}>
+                {key}: {currencyRateToUSD * conversionRateToUSD}
+              </li>
+            ))}
+        </ul>
       </div>
     </>
   );
