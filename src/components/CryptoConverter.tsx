@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./CryptoConverter.css";
 
 export default function CryptoConverter() {
-  const [cryptos, setCryptos] = useState([]);
-  const [currencyQuote, setCurrencyQuote] = useState({});
-  const [userInput, setUserInput] = useState("");
+  const [cryptos, setCryptos] = useState<Object>({});
+  const [conversionRateToUSD, setConversionRateToUSD] = useState<number>(0);
+  const [userInput, setUserInput] = useState<string>("");
 
   const fetchExchangeRates = async () => {
     fetch(
@@ -23,14 +23,18 @@ export default function CryptoConverter() {
     console.log(response);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    setCurrencyQuote(body);
+    setConversionRateToUSD(body?.data?.quote?.USD?.price || 0);
   };
 
   const handleSubmit = async (userInput: string) => {
     await fetchCryptoToUSD(userInput);
     await fetchExchangeRates();
 
-    const conversionRateToUSD = currencyQuote?.data?.quote.USD.price;
+    Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
+      <li key={index}>
+        {key}: {currencyRateToUSD * conversionRateToUSD}
+      </li>
+    ));
   };
 
   return (
@@ -59,14 +63,7 @@ export default function CryptoConverter() {
 
       {/* Display data from API */}
       <div className="cryptos">
-        <ul>
-          {conversionRateToUSD &&
-            Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
-              <li key={index}>
-                {key}: {currencyRateToUSD * conversionRateToUSD}
-              </li>
-            ))}
-        </ul>
+        <ul></ul>
       </div>
     </>
   );
