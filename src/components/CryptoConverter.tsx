@@ -14,11 +14,14 @@ interface CryptoPriceInUSD {
 export default function CryptoConverter() {
   const [exchangeRate, setExchangeRate] = useState<ExchangeRates>();
   const [conversionRateToUSD, setConversionRateToUSD] = useState<
-    CryptoPriceInUSD
+    number | null
   >();
   const [userInput, setUserInput] = useState<string>("");
 
-  const handleSubmit = async (userInput: string) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("made it here!");
     const USDPrice = await fetchCryptoToUSD(userInput);
 
     fetchExchangeRates().then((json: ExchangeRates) => {
@@ -30,7 +33,7 @@ export default function CryptoConverter() {
 
   return (
     <>
-      <form onSubmit={() => handleSubmit(userInput)}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="cryptoType">Cryptocurrency Exchange Rates</label>
         <input
           value={userInput}
@@ -44,14 +47,15 @@ export default function CryptoConverter() {
       {/* Display data from API */}
       <div className="cryptos">
         <ul>
-          {conversionRateToUSD}
-          {/* {exchangeRate &&
+          {exchangeRate &&
             conversionRateToUSD &&
-            Object.entries(exchangeRate).map(([key, currencyRateToUSD], index) => (
-              <li key={index}>
-                {key}: {currencyRateToUSD * conversionRateToUSD}
-              </li>
-            ))} */}
+            Object.entries(exchangeRate.rates).map(
+              ([key, currencyRateToUSD], index) => (
+                <li key={index}>
+                  {key}: {currencyRateToUSD * conversionRateToUSD}
+                </li>
+              )
+            )}
         </ul>
       </div>
     </>
