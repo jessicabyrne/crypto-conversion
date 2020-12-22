@@ -2,6 +2,7 @@ Notes:
 
 1. One element I got stuck on: OPENSSL_internal:WRONG_VERSION_NUMBER error when using Postman or express server to make API call.
    Solution: Add Agent to call, could be computer proxy as it works on a different computer.
+   Actual Solution: Proxy settings on computer, the call works through a VPN or on a different computer.
 
 2. Note: Caching! This type of call would be easy to cache and compare against rather than making a new call for every user input. With more time, add memcache or other caching mechanism that can update every minute.
 
