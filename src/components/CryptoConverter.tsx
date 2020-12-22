@@ -12,7 +12,7 @@ interface CryptoPriceInUSD {
 }
 
 export default function CryptoConverter() {
-  // const [exchangeRate, setExchangeRate] = useState<ExchangeRates>(number);
+  const [exchangeRate, setExchangeRate] = useState<ExchangeRates>();
   const [conversionRateToUSD, setConversionRateToUSD] = useState<
     CryptoPriceInUSD
   >();
@@ -20,15 +20,12 @@ export default function CryptoConverter() {
 
   const handleSubmit = async (userInput: string) => {
     const USDPrice = await fetchCryptoToUSD(userInput);
-    console.log(USDPrice);
 
-    // fetchExchangeRates().then((json: Cryptos) => {
-    // setExchangeRate(json);
-    // }
+    fetchExchangeRates().then((json: ExchangeRates) => {
+      setExchangeRate(json);
+    });
 
     setConversionRateToUSD(USDPrice);
-
-    console.log("conversionRateToUSD", conversionRateToUSD);
   };
 
   return (
@@ -48,9 +45,9 @@ export default function CryptoConverter() {
       <div className="cryptos">
         <ul>
           {conversionRateToUSD}
-          {/* {cryptos &&
+          {/* {exchangeRate &&
             conversionRateToUSD &&
-            Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
+            Object.entries(exchangeRate).map(([key, currencyRateToUSD], index) => (
               <li key={index}>
                 {key}: {currencyRateToUSD * conversionRateToUSD}
               </li>
