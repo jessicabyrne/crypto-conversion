@@ -1,36 +1,33 @@
 import React, { useState } from "react";
+import { fetchCryptoToUSD, fetchExchangeRates } from "../common/APIUtils";
 import "./CryptoConverter.css";
 
+interface ExchangeRates {
+  rates: {
+    [key: string]: number;
+  };
+}
+interface CryptoPriceInUSD {
+  price: number;
+}
+
 export default function CryptoConverter() {
-  const [cryptos, setCryptos] = useState<Object>({});
-  const [conversionRateToUSD, setConversionRateToUSD] = useState<number>(0);
+  // const [exchangeRate, setExchangeRate] = useState<ExchangeRates>(number);
+  const [conversionRateToUSD, setConversionRateToUSD] = useState<
+    CryptoPriceInUSD
+  >();
   const [userInput, setUserInput] = useState<string>("");
 
-  const fetchExchangeRates = async () => {
-    fetch(
-      `https://api.exchangeratesapi.io/latest?base=USD&symbols=GBP,BRL,EUR,AUD`
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setCryptos(json.rates);
-      });
-  };
-
-  const fetchCryptoToUSD = async (userInput: string) => {
-    const response = await fetch(
-      `http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=${userInput}`
-    );
-    console.log(response);
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    setConversionRateToUSD(body?.data?.quote?.USD?.price || 0);
-  };
-
   const handleSubmit = async (userInput: string) => {
-    await fetchCryptoToUSD(userInput);
-    await fetchExchangeRates();
+    const USDPrice = await fetchCryptoToUSD(userInput);
+    console.log(USDPrice);
 
-    console.log("cryptos", cryptos);
+    // fetchExchangeRates().then((json: Cryptos) => {
+    // setExchangeRate(json);
+    // }
+
+    setConversionRateToUSD(USDPrice);
+
     console.log("conversionRateToUSD", conversionRateToUSD);
   };
 
@@ -50,13 +47,14 @@ export default function CryptoConverter() {
       {/* Display data from API */}
       <div className="cryptos">
         <ul>
-          {cryptos &&
+          {conversionRateToUSD}
+          {/* {cryptos &&
             conversionRateToUSD &&
             Object.entries(cryptos).map(([key, currencyRateToUSD], index) => (
               <li key={index}>
                 {key}: {currencyRateToUSD * conversionRateToUSD}
               </li>
-            ))}
+            ))} */}
         </ul>
       </div>
     </>
