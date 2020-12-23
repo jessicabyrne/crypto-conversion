@@ -11,7 +11,7 @@ app.use(morgan("tiny"));
 app.use(cors({ credentials: true, origin: true }));
 
 app.get("/v1/*", (req, res) => {
-  // parse url data
+  // Possible improvement: parse url data
   let url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
 
   axios
