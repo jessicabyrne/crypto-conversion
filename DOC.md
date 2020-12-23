@@ -19,3 +19,5 @@ The first would be best for caching and then sorting based on user input. The se
 6. Note to self: potentially the results don't have to be stateful, might be worth setting as a variable and doing the calculation from that.
 
 7. When deploying, we'll want to edit the headers for the Access-Control-Allow-Origin value i.e. res.header("Access-Control-Allow-Origin", process.env.ORIGIN || "\*");
+
+8. Type out APIUTILS (promises?)

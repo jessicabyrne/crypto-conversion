@@ -1,4 +1,3 @@
-const https = require("https")
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -12,6 +11,7 @@ app.use(morgan("tiny"));
 app.use(cors({ credentials: true, origin: true }));
 
 app.get("/v1/*", (req, res) => {
+  // parse url data
   let url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
 
   axios
@@ -22,20 +22,14 @@ app.get("/v1/*", (req, res) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
       },
-      httpsAgent: new https.Agent({
-        rejectUnauthorized: false,
-      })
     })
-    .then((response) => { 
-      const data = response.data.data
-      const cryptoType = Object.keys(data)[0]
-      const price = data[cryptoType].quote.USD.price
-      res.json({price: price});
+    .then((response) => {
+      const data = response.data.data;
+      const cryptoType = Object.keys(data)[0];
+      const price = data[cryptoType].quote.USD.price;
+      res.json({ price: price });
     })
-    .catch((err) => {
-      console.log("error", err);
-      res.send(err.response);
-    });
+    .catch(error => res.status(error.response.status).send(error.response.statusText))
 });
 
 const port = process.env.PORT || 5000;
