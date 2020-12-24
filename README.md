@@ -29,10 +29,11 @@ Output should look like this:
  PASS  src/components/CryptoConverter.test.tsx
 
 Test Suites: 3 passed, 3 total
-Tests:       7 passed, 7 total
+Tests:       8 passed, 8 total
 Snapshots:   0 total
-Time:        2.343 s, estimated 4 s
+Time:        2.316 s, estimated 3 s
 Ran all test suites.
 
 Watch Usage: Press w to show more.
+
 ```

@@ -11,6 +11,9 @@ const fakeRates = {
   base: "USD",
   date: "2020-12-23",
 };
+const fakeUSDPrice = {
+  price: 23426.29596373085,
+};
 
 describe("APIUtils", () => {
   beforeEach(() => {
@@ -37,6 +40,12 @@ describe("APIUtils", () => {
   });
 
   describe("fetchCryptoToUSD", () => {
+    it("finds fetches price per USD", async () => {
+      fetch.mockResponseOnce(JSON.stringify(fakeUSDPrice));
+      await fetchCryptoToUSD("BTC");
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
     it("returns null when exception", async () => {
       fetch.mockReject(() => Promise.reject("API is down"));
 
