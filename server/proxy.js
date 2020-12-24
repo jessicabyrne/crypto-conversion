@@ -19,7 +19,7 @@ app.get("/v1/*", (req, res) => {
       headers: {
         "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
         Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "http://localhost:3000",
         "Access-Control-Allow-Credentials": true,
       },
     })
