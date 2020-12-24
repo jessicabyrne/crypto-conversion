@@ -1,28 +1,60 @@
 import React from "react";
-import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import CryptoConverter from "./CryptoConverter";
-import fetch from "jest-fetch-mock";
+import fetchMock from "fetch-mock";
 
-beforeEach(() => {
-  fetch.resetMocks();
-});
-act(() => {
-  describe("CryptoConverter", () => {
-    describe("when clicking submit button", () => {
-      it("shows currency types when fetch exchange rates is called", async () => {
-        const { getByText, getByPlaceholderText } = render(<CryptoConverter />);
-        const linkElement = getByPlaceholderText(/eg: BTC/i);
-        const submitButton = getByText("Submit");
+const fakeRates = {
+  rates: {
+    USD: 1,
+    EUR: 0.8219628473,
+    AUD: 1.3248397172,
+    BRL: 5.167433832,
+    GBP: 0.7455203025,
+  },
+  base: "USD",
+  date: "2020-12-23",
+};
 
-        fireEvent.click(linkElement);
-        fireEvent.change(linkElement, {
-          target: { value: "BTC" },
-        });
-        fireEvent.click(submitButton);
-        expect(fetch).toHaveBeenCalledWith(
-          "http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=BTC"
-        );
-      });
+const fakeUSDPrice = {
+  price: 23426.29596373085,
+};
+
+describe("CryptoConverter", () => {
+  afterEach(() => {
+    fetchMock.reset();
+    fetchMock.restore();
+  });
+  it("Verifies if currency is retrieved on button click - success", async () => {
+    fetchMock.mock(
+      `https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,GBP,BRL,EUR,AUD`,
+      {
+        body: fakeRates,
+        status: 200,
+      }
+    );
+
+    fetchMock.mock(
+      `http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=BTC`,
+      {
+        body: fakeUSDPrice,
+        status: 200,
+      }
+    );
+
+    // Render the App
+    const { getByText, getByPlaceholderText } = render(<CryptoConverter />);
+
+    const linkElement = getByPlaceholderText(/eg: BTC/i);
+    const submitButton = getByText("Submit");
+
+    fireEvent.click(linkElement);
+    fireEvent.change(linkElement, {
+      target: { value: "BTC" },
     });
+    fireEvent.click(submitButton);
+
+    // The above statement will result in an async action, so we need to wait a bit
+    const currency = await waitFor(() => getByText(/GBP/));
+    expect(currency).toBeInTheDocument();
   });
 });

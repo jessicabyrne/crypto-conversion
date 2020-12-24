@@ -38,7 +38,10 @@ export default function CryptoConverter(): React.ReactElement {
     return Object.entries(exchangeRate).map(
       ([currencyType, currencyRateToUSD], index) => (
         <li key={index}>
-          {currencyType}: {(currencyRateToUSD * conversionRateToUSD).toFixed(2)}
+          {currencyType}:{" "}
+          {(currencyRateToUSD * conversionRateToUSD).toLocaleString("en-US", {
+            maximumFractionDigits: 2,
+          })}
         </li>
       )
     );
