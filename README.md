@@ -12,6 +12,10 @@ nvm use // set the local node version to 14.15.1
 ```
 
 ```shell
+yarn // install dependencies
+```
+
+```shell
 yarn dev // runs the server and front end concurrently
 ```
 
