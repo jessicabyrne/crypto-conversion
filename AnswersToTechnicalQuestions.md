@@ -1,16 +1,14 @@
 ### How long did you spend on the coding assignment? What would you add to your solution if you had more time?
 
-I took about 5 hours to get this app set up properly. Here is a rough outline of the time spent:
+I took about 4-5 hours to get this app set up properly. Here is a rough outline of the time spent:
 
 1st hour: reviewing API documentation, writing strategy, considering security implications, think about what I should test
 
-2nd hour: building node/express proxy to fetch cryptocurrency data, write documentation as I go
+2nd hour: building node/express proxy to fetch cryptocurrency data, write tests and documentation as I go
 
 3rd hour: wire up to front end, add styles, use native HTML elements for accessibility.
 
-4th hour: write tests, refactor, etc.
-
-5th hour: tidy code, double check documentation.
+4th hour: write tests, refactor, tidy code, double check documentation.
 
 #### What would you add to your solution if you had more time?
 
@@ -26,7 +24,6 @@ With more time: There are still loads of improvements for this app possible with
 4. Write more tests. With more time I would add more tests to the suite. Add more unit tests, add edge cases, etc. Also consolidate testing libraries, I used a couple of different ones to try some different solutions but in a real project you should be consistently using the same libraries.
 
 5. Add loading case. Currently a `0` flashes when first fetching results, which could be suppressed or a loader used instead.
-
 
 ### What was the most useful feature that was added to the latest version of your language of choice? Please include a snippet of code that shows how you've used it.
 
@@ -57,19 +54,11 @@ I enjoyed building the app from scratch. There were a lot of interesting element
   "lastname": "Byrne",
   "nationality": "USA",
   "willMoveToAmsterdam": true,
-  "passions": [
-    "Programming",
-    "Psychology",
-    "Travel"
-  ],
-  "hobbies" : [
-    "Skiing",
-    "Hiking",
-    "Camping"
-  ]
-  "interests": [
-    "Behavioral Economics",
-    "Podcasting"
-  ]
+  "seeks": "fulfilling career",
+  "livedIn": ["England", "Nepal", "Spain", "USA"],
+  "passions": ["Programming", "Psychology", "Travel"],
+  "hobbies": ["Skiing", "Hiking", "Kayaking"],
+  "interests": ["Behavioral Economics", "Podcasting"],
+  "opinion": "Everything should have a dark theme"
 }
 ```

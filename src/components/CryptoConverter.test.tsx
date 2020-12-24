@@ -57,4 +57,32 @@ describe("CryptoConverter", () => {
     const currency = await waitFor(() => getByText(/GBP/));
     expect(currency).toBeInTheDocument();
   });
+
+  it("Verifies if error is shown on button click - failure", async () => {
+    fetchMock.mock(
+      `https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,GBP,BRL,EUR,AUD`,
+      Promise.reject("TypeError: Failed to fetch")
+    );
+
+    fetchMock.mock(
+      `http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=BTC`,
+      Promise.reject("TypeError: Failed to fetch")
+    );
+
+    // Render the App
+    const { getByText, getByPlaceholderText } = render(<CryptoConverter />);
+
+    const linkElement = getByPlaceholderText(/eg: BTC/i);
+    const submitButton = getByText("Submit");
+
+    fireEvent.click(linkElement);
+    fireEvent.change(linkElement, {
+      target: { value: "BTC" },
+    });
+    fireEvent.click(submitButton);
+
+    // The above statement will result in an async action, so we need to wait a bit
+    const currency = await waitFor(() => getByText(/No results found/));
+    expect(currency).toBeInTheDocument();
+  });
 });
