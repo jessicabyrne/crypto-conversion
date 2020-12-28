@@ -12,7 +12,9 @@ type Rate = {
 
 export default function CryptoConverter(): React.ReactElement {
   const [exchangeRate, setExchangeRate] = useState<Rate>();
-  const [conversionRateToUSD, setConversionRateToUSD] = useState<number>(0);
+  const [conversionRateToUSD, setConversionRateToUSD] = useState<
+    number | undefined
+  >(undefined);
   const [userInput, setUserInput] = useState<string>("");
   const [error, setError] = useState<Boolean>(false);
 
@@ -35,6 +37,7 @@ export default function CryptoConverter(): React.ReactElement {
   };
 
   const exchangeRateDisplay = (exchangeRate: Rate) => {
+    if (!conversionRateToUSD) return;
     return Object.entries(exchangeRate).map(
       ([currencyType, currencyRateToUSD], index) => (
         <li key={index}>
@@ -64,7 +67,7 @@ export default function CryptoConverter(): React.ReactElement {
       </form>
 
       {/* Display data from API */}
-      {!error && conversionRateToUSD !== 0 ? (
+      {!error ? (
         <div className="cryptos">
           <ul>
             {exchangeRate &&

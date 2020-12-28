@@ -21,9 +21,9 @@ With more time: There are still loads of improvements for this app possible with
 3. Do more sanitizing of the input on the backend. Checks on the front end are not enough for data sanitization. With more time, I could add a sanitization library and make sure the URI is encoded properly. For this application there are no POST requests so it is less critical, but something to consider for security.
    3a. One thing to add for security would be an autocomplete/dropdown user input that only takes valid cryptocurrency inputs.
 
-4. Write more tests. With more time I would add more tests to the suite. Add more unit tests, add edge cases, etc. Also consolidate testing libraries, I used a couple of different ones to try some different solutions but in a real project you should be consistently using the same libraries.
+4. Write more tests. With more time I would add more tests to the suite. Look into writing integration tests, add edge cases, text proxy layer, etc.
 
-5. Add loading case. Currently a `0` flashes when first fetching results, which could be suppressed or a loader used instead.
+5. Add loading, can show a loading icon when fetching the data.
 
 ### What was the most useful feature that was added to the latest version of your language of choice? Please include a snippet of code that shows how you've used it.
 
