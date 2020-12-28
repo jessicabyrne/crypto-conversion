@@ -1,4 +1,3 @@
-const https = require("https");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -9,31 +8,28 @@ require("dotenv").config();
 const app = express();
 
 app.use(morgan("tiny"));
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 
-app.get("/*", (req, res) => {
-  let url = `https://pro-api.coinmarketcap.com/v1${req.originalUrl}`;
+app.get("/v1/*", (req, res) => {
+  // Possible improvement: parse url data
+  let url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
 
   axios
     .get(url, {
       headers: {
         "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
         Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "http://localhost:3000",
         "Access-Control-Allow-Credentials": true,
       },
-      httpsAgent: new https.Agent({
-        rejectUnauthorized: false,
-      }),
     })
     .then((response) => {
-      console.log("response", response);
-      res.send(response.data);
+      const data = response.data.data;
+      const cryptoType = Object.keys(data)[0];
+      const price = data[cryptoType].quote.USD.price;
+      res.json({ price: price });
     })
-    .catch((err) => {
-      console.log("error", err);
-      res.send(err.response);
-    });
+    .catch(error => res.status(error.response.status).send(error.response.statusText))
 });
 
 const port = process.env.PORT || 5000;

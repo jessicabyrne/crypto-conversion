@@ -22,6 +22,6 @@
   },
   "include": [
     "src",
-    "src/services/ConvertCrypto.ts"
+    "files-to-delete/services/ConvertCrypto.ts"
   ]
 }
