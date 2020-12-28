@@ -1,7 +1,8 @@
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import CryptoConverter from "./CryptoConverter";
-import fetchMock from "fetch-mock";
+import * as utils from "../common/APIUtils";
+import fetch from "jest-fetch-mock";
 
 const fakeRates = {
   rates: {
@@ -19,29 +20,24 @@ const fakeUSDPrice = {
   price: 23426.29596373085,
 };
 
+let mockFetchCryptoToUSD = jest.spyOn(utils, "fetchCryptoToUSD");
+let mockFetchExchangeRates = jest.spyOn(utils, "fetchExchangeRates");
+
 describe("CryptoConverter", () => {
+  beforeEach(() => {
+    mockFetchCryptoToUSD = jest.spyOn(utils, "fetchCryptoToUSD");
+    mockFetchExchangeRates = jest.spyOn(utils, "fetchExchangeRates");
+  });
   afterEach(() => {
-    fetchMock.reset();
-    fetchMock.restore();
+    fetch.resetMocks();
   });
   it("Verifies if currency is retrieved on button click - success", async () => {
-    fetchMock.mock(
-      `https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,GBP,BRL,EUR,AUD`,
-      {
-        body: fakeRates,
-        status: 200,
-      }
-    );
-
-    fetchMock.mock(
-      `http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=BTC`,
-      {
-        body: fakeUSDPrice,
-        status: 200,
-      }
-    );
-
     // Render the App
+    mockFetchCryptoToUSD.mockImplementation(() =>
+      Promise.resolve(fakeUSDPrice)
+    );
+    mockFetchExchangeRates.mockImplementation(() => Promise.resolve(fakeRates));
+
     const { getByText, getByPlaceholderText } = render(<CryptoConverter />);
 
     const linkElement = getByPlaceholderText(/eg: BTC/i);
@@ -53,22 +49,21 @@ describe("CryptoConverter", () => {
     });
     fireEvent.click(submitButton);
 
+    expect(mockFetchCryptoToUSD).toHaveBeenCalledWith("BTC");
+    expect(mockFetchExchangeRates).toHaveBeenCalledTimes(1);
     // The above statement will result in an async action, so we need to wait a bit
     const currency = await waitFor(() => getByText(/GBP/));
     expect(currency).toBeInTheDocument();
   });
 
   it("Verifies if error is shown on button click - failure", async () => {
-    fetchMock.mock(
-      `https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,GBP,BRL,EUR,AUD`,
-      Promise.reject("TypeError: Failed to fetch")
+    mockFetchCryptoToUSD.mockImplementation(() =>
+      Promise.reject("API is down")
     );
 
-    fetchMock.mock(
-      `http://localhost:5000/v1/cryptocurrency/quotes/latest?symbol=BTC`,
-      Promise.reject("TypeError: Failed to fetch")
+    mockFetchExchangeRates.mockImplementation(() =>
+      Promise.reject("API is down")
     );
-
     // Render the App
     const { getByText, getByPlaceholderText } = render(<CryptoConverter />);
 
@@ -77,10 +72,12 @@ describe("CryptoConverter", () => {
 
     fireEvent.click(linkElement);
     fireEvent.change(linkElement, {
-      target: { value: "BTC" },
+      target: { value: "ETH" },
     });
     fireEvent.click(submitButton);
 
+    expect(mockFetchCryptoToUSD).toHaveBeenCalledWith("ETH");
+    expect(mockFetchExchangeRates).toHaveBeenCalledTimes(1);
     // The above statement will result in an async action, so we need to wait a bit
     const currency = await waitFor(() => getByText(/No results found/));
     expect(currency).toBeInTheDocument();

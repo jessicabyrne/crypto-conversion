@@ -38,7 +38,7 @@ export default function CryptoConverter(): React.ReactElement {
     return Object.entries(exchangeRate).map(
       ([currencyType, currencyRateToUSD], index) => (
         <li key={index}>
-          {currencyType}: {" "}
+          {currencyType}:{" "}
           {(currencyRateToUSD * conversionRateToUSD).toLocaleString("en-US", {
             maximumFractionDigits: 2,
           })}
@@ -64,7 +64,7 @@ export default function CryptoConverter(): React.ReactElement {
       </form>
 
       {/* Display data from API */}
-      {!error ? (
+      {!error && conversionRateToUSD !== 0 ? (
         <div className="cryptos">
           <ul>
             {exchangeRate &&

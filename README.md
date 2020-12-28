@@ -19,6 +19,8 @@ yarn // install dependencies
 yarn dev // runs the server and front end concurrently
 ```
 
+See the app at [http://localhost:3000/](http://localhost:3000/)
+
 ## Tests
 
 ```shell
@@ -29,15 +31,23 @@ Output should look like this:
 
 ```shell
  PASS  src/common/APIUtils.test.tsx
+ PASS  src/index.test.tsx
  PASS  src/App.test.tsx
  PASS  src/components/CryptoConverter.test.tsx
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------------|---------|----------|---------|---------|-------------------
+All files             |     100 |      100 |     100 |     100 |
+ src                  |     100 |      100 |     100 |     100 |
+  App.tsx             |     100 |      100 |     100 |     100 |
+  index.tsx           |     100 |      100 |     100 |     100 |
+ src/common           |     100 |      100 |     100 |     100 |
+  APIUtils.ts         |     100 |      100 |     100 |     100 |
+ src/components       |     100 |      100 |     100 |     100 |
+  CryptoConverter.tsx |     100 |      100 |     100 |     100 |
+----------------------|---------|----------|---------|---------|-------------------
 
-Test Suites: 3 passed, 3 total
-Tests:       8 passed, 8 total
-Snapshots:   0 total
-Time:        2.316 s, estimated 3 s
-Ran all test suites.
-
-Watch Usage: Press w to show more.
+Test Suites: 4 passed, 4 total
+Tests:       7 passed, 7 total
 
 ```
