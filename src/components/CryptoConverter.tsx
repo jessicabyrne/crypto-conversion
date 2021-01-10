@@ -1,39 +1,35 @@
-import React, { useState } from "react";
-import { fetchCryptoToUSD, fetchExchangeRates } from "../common/APIUtils";
-import "./CryptoConverter.css";
-
-interface ExchangeRates {
-  rates: Rate;
-}
-
-type Rate = {
-  [key: string]: number;
-};
+import React, { useState } from 'react';
+import {
+  fetchCryptoToUSD,
+  fetchExchangeRates,
+  Rate,
+} from '../common/APIUtils';
+import './CryptoConverter.css';
 
 export default function CryptoConverter(): React.ReactElement {
   const [exchangeRate, setExchangeRate] = useState<Rate>();
   const [conversionRateToUSD, setConversionRateToUSD] = useState<
     number | undefined
   >(undefined);
-  const [userInput, setUserInput] = useState<string>("");
+  const [userInput, setUserInput] = useState<string>('');
   const [error, setError] = useState<Boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
     setError(false);
     // get exchange rate of user inputted crypto to USD
-    fetchCryptoToUSD(userInput)
-      .then((USDPrice) => {
-        setConversionRateToUSD(USDPrice);
-      })
-      .catch(() => setError(true));
-
-    // get exchange rate of common currencies to USD
-    fetchExchangeRates()
-      .then((json: ExchangeRates) => {
-        setExchangeRate(json.rates);
-      })
-      .catch(() => setError(true));
+    try {
+      const [USDPrice, exchangeRates] = await Promise.all([
+        fetchCryptoToUSD(userInput),
+        fetchExchangeRates(),
+      ]);
+      setConversionRateToUSD(USDPrice);
+      setExchangeRate(exchangeRates.rates);
+    } catch (e) {
+      setError(true);
+    }
   };
 
   const exchangeRateDisplay = (exchangeRate: Rate) => {
@@ -41,19 +37,24 @@ export default function CryptoConverter(): React.ReactElement {
     return Object.entries(exchangeRate).map(
       ([currencyType, currencyRateToUSD], index) => (
         <li key={index}>
-          {currencyType}:{" "}
-          {(currencyRateToUSD * conversionRateToUSD).toLocaleString("en-US", {
-            maximumFractionDigits: 2,
-          })}
+          {currencyType}:{' '}
+          {(currencyRateToUSD * conversionRateToUSD).toLocaleString(
+            'en-US',
+            {
+              maximumFractionDigits: 2,
+            },
+          )}
         </li>
-      )
+      ),
     );
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="cryptoType">Cryptocurrency Exchange Rates</label>
+        <label htmlFor="cryptoType">
+          Cryptocurrency Exchange Rates
+        </label>
         <input
           value={userInput}
           id="cryptoType"

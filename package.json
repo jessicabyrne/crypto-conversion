@@ -32,7 +32,8 @@
     "server": "nodemon server/proxy.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"**/*.js\""
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +55,8 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.9",
+    "prettier": "^2.2.1",
+    "runtypes": "^5.0.1",
     "ts-node": "^9.1.1"
   }
 }
