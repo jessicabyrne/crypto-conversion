@@ -1,5 +1,5 @@
-import fetch from "jest-fetch-mock";
-import { fetchExchangeRates, fetchCryptoToUSD } from "./APIUtils";
+import fetch from 'jest-fetch-mock';
+import { fetchExchangeRates, fetchCryptoToUSD } from './APIUtils';
 
 const fakeRates = {
   rates: {
@@ -8,29 +8,29 @@ const fakeRates = {
     BRL: 5.167433832,
     GBP: 0.7455203025,
   },
-  base: "USD",
-  date: "2020-12-23",
+  base: 'USD',
+  date: '2020-12-23',
 };
 const fakeUSDPrice = {
   price: 23426.29596373085,
 };
 
-describe("APIUtils", () => {
+describe('APIUtils', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
-  describe("fetchExchangeRates", () => {
-    it("finds exchange rate", async () => {
+  describe('fetchExchangeRates', () => {
+    it('finds exchange rate', async () => {
       fetch.mockResponseOnce(JSON.stringify(fakeRates));
       await fetchExchangeRates();
       expect(fetch).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe("fetchCryptoToUSD", () => {
-    it("finds fetches price per USD", async () => {
+  describe('fetchCryptoToUSD', () => {
+    it('finds fetches price per USD', async () => {
       fetch.mockResponseOnce(JSON.stringify(fakeUSDPrice));
-      await fetchCryptoToUSD("BTC");
+      await fetchCryptoToUSD('BTC');
       expect(fetch).toHaveBeenCalledTimes(1);
     });
   });
