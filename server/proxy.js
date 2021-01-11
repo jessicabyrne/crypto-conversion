@@ -12,7 +12,7 @@ app.use(cors({ credentials: true, origin: true }));
 
 app.get('/v1/*', (req, res) => {
   // Possible improvement: parse url data
-  let url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
+  const url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
 
   axios
     .get(url, {
