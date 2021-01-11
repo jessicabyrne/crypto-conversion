@@ -1,4 +1,4 @@
-# How long did you spend on the coding assignment? What would you add to your solution if you had more time?
+# How long did you spend on the coding assignment?
 
 I took about 4-5 hours to get this app set up properly. Here is a rough outline of the time spent:
 
@@ -6,29 +6,31 @@ I took about 4-5 hours to get this app set up properly. Here is a rough outline 
 
 2nd hour: building node/express proxy to fetch cryptocurrency data, write tests and documentation as I go
 
-3rd hour: wire up to front end, add styles, use native HTML elements for accessibility.
+3rd hour: wire up to front end, add styles, use native HTML elements for accessibility. Add some sanitization of input on the front end input field.
 
 4th hour: write tests, refactor, tidy code, double check documentation.
 
 # What would you add to your solution if you had more time?
 
-With more time: There are still loads of improvements for this app possible with more time.
+There are still loads of improvements for this app possible with more time.
 
 1. Caching: to improve the speed and usability of the app, the service could make a single call to the CoinMarketCap API and cache it, then do a search on the result when the user inputs data. With more time, I could add memcache or another caching mechanism to get results every minute.
 
 2. Expand the typing on the app. The more types the better. For this project I left the proxy layer alone in consideration of time, but I could use the library `runtypes` to add necessary typing.
 
-3. Do more sanitizing of the input on the backend. Checks on the front end are not enough for data sanitization. With more time, I could add a sanitization library and make sure the URI is encoded properly. 
+3. Do more sanitizing of the input on the backend. Checks on the front end are not enough for data sanitization. With more time, I could add a sanitization library and make sure the URI is encoded properly.
 
    3a. One thing to add for security would be an autocomplete/dropdown user input that only takes valid cryptocurrency inputs.
 
-4. Write more tests. With more time I would add more tests to the suite. Look into writing integration tests, add edge cases, text proxy layer, etc.
+4. Write more tests. With more time I would add more tests to the suite. Look into writing integration tests, consider more edge cases, text proxy layer, etc.
 
-5. Add loading, can show a loading icon when fetching the data.
+5. Add loading, could show a loading icon when fetching the data.
+
+6. Error handling: right now there is a generic error message "No results found" but there could be more error messages depending on the response we get back.
 
 # What was the most useful feature that was added to the latest version of your language of choice? Please include a snippet of code that shows how you've used it.
 
-The one feature of es2020/es6 that I use often is optional chaining. It allows you to access deeply nested object properties without adding a long chain of checks to see if the value before exists.
+The one feature of es2020/es6 that I appreciate is optional chaining. It allows you to access deeply nested object properties without adding a long chain of checks to see if the value before exists.
 
 I could do something like
 `const price = data[cryptoType]?.quote?.USD?.price` to make sure the data object is coming back as expected.
@@ -36,6 +38,8 @@ I could do something like
 # How would you track down a performance issue in production? Have you ever had to do this?
 
 Yes I am often tracking down performance issues in production. If the problem is on the front end, the DevTools offer a lot of information about network activity, thread tasks, and there's a performance profiler as well. It often helps to debug issues in production if there are tools such as Splunk and Dynatrace where you can dig into logs with specific responses, error codes, etc.
+
+Tools like Lighthouse can also be helpful as it shows how long it took to run and parse different scripts. A good rule of thumb is to always add logs as you go to make it easier for engineers coming along later to diagnose.
 
 # What was the latest technical book you have read or tech conference you have been to? What did you learn?
 
