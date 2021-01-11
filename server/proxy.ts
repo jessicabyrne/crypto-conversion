@@ -1,9 +1,8 @@
-import * as dotenv from 'dotenv';
-
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import { AxiosResponse, AxiosError } from 'axios';
 
 // initialize configuration
@@ -16,7 +15,7 @@ app.use(cors({ credentials: true, origin: true }));
 
 app.get('/v1/*', (req: Request, res: Response) => {
   // Possible improvement: parse url data
-  let url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
+  const url = `https://pro-api.coinmarketcap.com${req.originalUrl}`;
 
   axios
     .get(url, {

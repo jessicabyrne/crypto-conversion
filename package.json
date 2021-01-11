@@ -2,6 +2,7 @@
   "name": "crypto-convert",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -26,7 +27,7 @@
   "scripts": {
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn start\"",
     "start": "react-scripts start",
-    "server": "nodemon server/proxy.mjs",
+    "server": "node --loader ts-node/esm server/proxy.ts --experimental-top-level-await",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
