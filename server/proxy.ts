@@ -3,8 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
-import { AxiosResponse, AxiosError } from 'axios';
-import { Number, Record, Dictionary, Static, Array } from 'runtypes';
+import { AxiosError } from 'axios';
+import { Number, Record, Dictionary, Static } from 'runtypes';
 
 // initialize configuration
 dotenv.config();
@@ -20,8 +20,10 @@ const CryptoInfo = Record({
   quote: USDExchange,
 });
 
+const CryptoType = Dictionary(CryptoInfo);
+
 const Data = Record({
-  data: Array(Record({ CryptoInfo })),
+  data: CryptoType,
 });
 
 const ServerData = Record({
