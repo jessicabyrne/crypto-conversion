@@ -20,8 +20,12 @@ const CryptoInfo = Record({
   quote: USDExchange,
 });
 
+const Data = Record({
+  data: Array(Record({ CryptoInfo })),
+});
+
 const ServerData = Record({
-  data: Array(CryptoInfo),
+  data: Data,
 });
 
 type ServerDataType = Static<typeof ServerData>;
@@ -42,14 +46,12 @@ app.get('/v1/*', (req: Request, res: Response) => {
         'Access-Control-Allow-Credentials': true,
       },
     })
-    .then(
-      (response: AxiosResponse): ServerDataType => {
-        const data = response.data.data;
-        const cryptoType = Object.keys(data)[0];
-        const price = data[cryptoType].quote.USD.price;
-        res.json({ price: price });
-      },
-    )
+    .then((response: ServerDataType) => {
+      const data = response.data.data;
+      const cryptoType = Object.keys(data)[0];
+      const price = data[cryptoType].quote.USD.price;
+      res.json({ price: price });
+    })
     .catch((error: AxiosError) => {
       if (error.response) {
         return res
