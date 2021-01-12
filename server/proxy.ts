@@ -4,11 +4,27 @@ import morgan from 'morgan';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
 import { AxiosResponse, AxiosError } from 'axios';
+import { Number, Record, Dictionary, Static, Array } from 'runtypes';
 
 // initialize configuration
 dotenv.config();
 
 const app: Application = express();
+
+const Price = Dictionary(Number);
+const USDExchange = Record({
+  USD: Price,
+});
+
+const CryptoInfo = Record({
+  quote: USDExchange,
+});
+
+const ServerData = Record({
+  data: Array(CryptoInfo),
+});
+
+type ServerDataType = Static<typeof ServerData>;
 
 app.use(morgan('tiny')); // logging
 app.use(cors({ credentials: true, origin: true }));
@@ -26,12 +42,14 @@ app.get('/v1/*', (req: Request, res: Response) => {
         'Access-Control-Allow-Credentials': true,
       },
     })
-    .then((response: AxiosResponse) => {
-      const data = response['data'].data;
-      const cryptoType = Object.keys(data)[0];
-      const price = data[cryptoType].quote.USD.price;
-      res.json({ price: price });
-    })
+    .then(
+      (response: AxiosResponse): ServerDataType => {
+        const data = response.data.data;
+        const cryptoType = Object.keys(data)[0];
+        const price = data[cryptoType].quote.USD.price;
+        res.json({ price: price });
+      },
+    )
     .catch((error: AxiosError) => {
       if (error.response) {
         return res
