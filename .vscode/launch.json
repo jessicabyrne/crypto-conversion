@@ -20,7 +20,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Proxy",
-      "program": "${workspaceFolder}/server/proxy.ts",
+      "program": "${workspaceFolder}/server/proxy.js",
       "skipFiles": ["<node_internals>/**"]
     },
     {
