@@ -7,6 +7,9 @@ Calculates the latest quotes in a user submitted cryptocurrency code (e.g. BTC)
 First, make sure you get an API key from [CoinMarketCapAPI](https://coinmarketcap.com/api/)
 Then in the root of the directory, create a new file called `.env` and add your API key in that file like so: `CMC_API_KEY=YOUR_API_KEY_GOES_HERE`
 
+<b>Note: For ease of use, I left the .env file in this project. However, normally this should be hidden and listed as a file to ignore in .gitignore!</b>
+
+
 ```shell
 nvm use // set the local node version to 14.15.1
 ```
